@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: none;
+  text-align: left;
+  padding: 8px;
+}
+tr{
+  height:100px
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+
+<script>
+		function createCORSRequest(method, url) {
+  			var xhr = new XMLHttpRequest();
+  			// XHR for Chrome/Firefox/Opera/Safari.	
+			if ("withCredentials" in xhr) {
+				xhr.open(method, url, false);
+  			} 
+			else if (typeof XDomainRequest != "undefined") {
+    				// XDomainRequest for IE.
+    				xhr = new XDomainRequest();
+    				xhr.open(method, url);
+  			} 
+			else {
+    				// CORS not supported.
+    				xhr = null;
+  			}
+  			return xhr;
+		}
+	
+		function getKmovies(){
+			//var url='http://127.0.0.1:5000/getmovies';
+			var url = 'https://fierce-savannah-49222.herokuapp.com/getmovies'
+			var xhr = createCORSRequest('GET', url);
+			xhr.onload = function() {
+    				var text = xhr.responseText;
+    				renderKmovies(text);
+  			};
+
+  			xhr.onerror = function() {
+    				alert('Woops, there was an error on our side.');
+  			};
+
+  			xhr.send();
+		}
+		
+		function renderKmovies(text){
+			var jsonResp = JSON.parse(text);
+			var imgs = document.getElementsByClassName('mov_img');
+			var names = document.getElementsByClassName('mov_name');
+			var years = document.getElementsByClassName('mov_year');
+			var ctr = 0;
+			for (var key in jsonResp) {
+				if (jsonResp.hasOwnProperty(key)){
+					imgs[ctr].setAttribute("id", key);
+					imgs[ctr].src = jsonResp[key][2];
+					years[ctr].innerHTML = jsonResp[key][1];
+					names[ctr].innerHTML = jsonResp[key][0];
+					ctr++;
+				}
+			}
+			
+		}
+		
+		function checkEntries(){
+			var ratings = document.getElementsByClassName('mov_rating');
+			var imgs = document.getElementsByClassName('mov_img');
+			var resp = {};
+			for (var i = 0; i < ratings.length; i++) {
+				resp[imgs[i].id]=ratings[i].value;
+				if(ratings[i].value=="Rate here"){
+					alert("Please rate all movies and then submit");
+					
+					return;
+				}
+			}
+			//alert(resp[imgs[0].id]);
+			postRatings(resp)
+		}
+		
+		function postRatings(ratings){
+			//var url='http://127.0.0.1:5000/postratings';
+			var url = 'https://fierce-savannah-49222.herokuapp.com/postratings'
+			var xhr = createCORSRequest('POST', url);
+			xhr.setRequestHeader("Content-Type", 'application/json');
+			xhr.onload = function() {
+    				var text = xhr.responseText;
+    				renderRecs(text);
+  			};
+ 
+  			xhr.onerror = function() {
+    				alert('Woops, there was an error on our side.');
+  			};
+
+  			xhr.send(JSON.stringify(ratings));
+		}
+		
+		function renderRecs(text){
+			//alert(text);
+			var jsonResp = JSON.parse(text);
+			document.getElementById("Recs").style.display = "block";
+			var imgs = document.getElementsByClassName('mov_img');
+			var names = document.getElementsByClassName('mov_name');
+			var years = document.getElementsByClassName('mov_year');
+			for (var key in jsonResp) {
+				if (jsonResp.hasOwnProperty(key)){
+					if(key=="U"){
+						var ctr=12;
+						for (var mov in jsonResp[key]){
+							imgs[ctr].src = jsonResp[key][mov][2];
+							years[ctr].innerHTML = jsonResp[key][mov][1];
+							names[ctr].innerHTML = jsonResp[key][mov][0];
+							ctr++;
+						}
+					}
+					if(key=="I"){
+						var ctr=24;
+						for (var mov in jsonResp[key]){
+							imgs[ctr].src = jsonResp[key][mov][2];
+							years[ctr].innerHTML = jsonResp[key][mov][1];
+							names[ctr].innerHTML = jsonResp[key][mov][0];
+							ctr++;
+						}
+					}
+					if(key=="M"){
+						var ctr=36;
+						for (var mov in jsonResp[key]){
+							imgs[ctr].src = jsonResp[key][mov][2];
+							years[ctr].innerHTML = jsonResp[key][mov][1];
+							names[ctr].innerHTML = jsonResp[key][mov][0];
+							ctr++;
+						}
+					}
+				}
+			}
+			document.getElementById("button-submit").disabled = true;
+			
+		}
+		
+		
+	</script>
+
+</head>
+<body onload="getKmovies()">
+
+<div>
+<h2><center>Rate Movies</center></h2>
+<table>
+  <col width="15%">
+  <col width="30%">
+  <col width="30%">
+  <col width="25%">
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr><tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+    <td>
+		<select class="mov_rating" required>
+			<option selected disabled>Rate here</option>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</td>
+  </tr>  
+</table>
+<center><button id="button-submit" type="button" onclick="checkEntries()"><h3>Submit</h3></button></center>
+</div>
+
+<div id="Recs" style="display: none;">
+<br/>
+<h2><center>User-User Collaborative Filtering Recommendations</center></h2>
+<table>
+  <col width="20%">
+  <col width="40%">
+  <col width="40%">
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr><tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>  
+</table>
+<br/>
+<h2><center>Item-Item Collaborative Filtering Recommendations</center></h2>
+<table>
+  <col width="20%">
+  <col width="40%">
+  <col width="40%">
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr><tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>  
+  </table>
+  <br/>
+  <h2><center>FunkSVD based Recommendations</center></h2>
+<table>
+  <col width="20%">
+  <col width="40%">
+  <col width="40%">
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>
+  <tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr><tr>
+    <td><img class="mov_img"></img></td>
+    <td><p class="mov_name" ></p></td>
+	<td><p class="mov_year"></p></td>
+  </tr>  
+</table>
+
+</div>
+
+
+</body>
+</html>
