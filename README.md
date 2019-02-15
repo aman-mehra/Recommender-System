@@ -4,7 +4,7 @@ An application which recommends movies to a user after he/she rates some movies.
 
 ### Dependancies
 
-The followng pacckages will need to be installed. Requirements.txt exhaustively lists all the requirements as well.
+The followng packages will need to be installed. Requirements.txt exhaustively lists all the requirements as well.
 
 * pandas
 * numpy
@@ -18,15 +18,15 @@ The followng pacckages will need to be installed. Requirements.txt exhaustively 
 
 The codebase consists of python code which is used to create and access the database of movies and users as well as develop the recommendation algorithms and run the server.The webpage to interact with the application is present in the index.html file.
 
-The directory extras contain the MongoDb database used by the application along with a dataset of movies and ratings taken from the grouplens research group online. The python files present were used to scrape data from the web and build the collections in the MongoDb database. 
+The directory Extras contains the MongoDb database used by the application along with a dataset of movies and ratings taken from the grouplens research group online. The python files present were used to scrape data from the web and build the collections in the MongoDb database. 
 
-The MongoDb Database consists of two colllections one which contains the movie names, year of release and urls of their thumbnail images
+The MongoDb Database consists of two collections one which contains the movie names, year of release and urls of their thumbnail images
 while the second collection contains ratings of dummy users
 
 Below is a brief explanation of what each file does:
 * [backend.py](backend.py) : This runs the flask server which handles the GET and POST requests.It manages interractions between MongoConnector and Recommender.
-* [MongoConnector.py](MongoConnector.py) : This file handles all the interractions with the MongoDb database.It contains routines to fetch data in all the various forms required by the appliation.
-* [Recommender.py](Recommender.py) : This contains implementations for all the recommendation algotithms, namely User-User collaborative filtering, Item-Item collaborative filtering and the Matrix Factorization based approach wherin it uses the FunkSVD algorithm.
+* [MongoConnector.py](MongoConnector.py) : This file handles all the interactions with the MongoDb database.It contains routines to fetch data in all the various forms required by the appliation.
+* [Recommender.py](Recommender.py) : This contains implementations for all the recommendation algorithms, namely User-User collaborative filtering, Item-Item collaborative filtering and the Matrix Factorization based approach wherin it uses the FunkSVD algorithm.
 * [dbanalyzer.py](Extras/dbanalyzer.py) : This is a utility to validate the distribuion of various genres in the movies stored in the database
 * [dummyUsers.py](Extras/dummyUsers.py) : This is a utility to build the database containing dummy users and their ratings
 * [movieDbBuilder.py](Extras/movieDbBuilder.py) : This is a utility to build the database containing the movies and their additional information
