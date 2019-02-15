@@ -53,7 +53,7 @@ Click [here](https://amehra-github.github.io/Recommender-System/index.html) to s
 
 * FunkSVD and Matrix Factorization - Referred to [Medium](https://medium.com/datadriveninvestor/how-funk-singular-value-decomposition-algorithm-work-in-recommendation-engines-36f2fbf62cac) and [Coursera](https://www.coursera.org/learn/matrix-factorization)
 * Dataset - [MovieLens](https://grouplens.org/datasets/movielens/)
-* Collaborative Filtering Algorithms - [here](https://www.analyticsvidhya.com/blog/2018/06/comprehensive-guide-recommendation-engine-python/)
+* Collaborative Filtering Algorithms - [here](https://hackernoon.com/introduction-to-recommender-system-part-1-collaborative-filtering-singular-value-decomposition-44c9659c5e75)
 
 
 
