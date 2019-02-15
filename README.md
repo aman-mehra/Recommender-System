@@ -35,7 +35,7 @@ Below is a brief explanation of what each file does:
 ## Implementation Notes
 
 * Have used Pearson correlation for the user-user collaborative filtering
-* Used cosine similarity for item-item cosine collaborative filtering
+* Used cosine similarity for item-item collaborative filtering
 * The matrix factorization approach pre-trains and stores weights and features of original database(in [chkpt_P](chkpt_P.csv) and [chkpt_Q](chkpt_Q.csv)) and then partially retrains as it gets requests form users online. For this purpose most methods in its implementation have two modes of running - offline and online
 * The number of user ratings accepted are 12 
 
