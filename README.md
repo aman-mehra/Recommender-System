@@ -41,7 +41,7 @@ Below is a brief explanation of what each file does:
 
 ## Running the application
 
-Click [here](https://amehra-github.github.io/Recommender-System/index.html) to see it in action.
+Click [here](https://aman-mehra.github.io/Recommender-System/index.html) to see it in action.
 
 ### Deployment details
 
